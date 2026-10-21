@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#22355c"/><stop offset="1" stop-color="#0d1422"/>
+    </linearGradient>
+    <linearGradient id="trail" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0"/><stop offset="1" stop-color="#ffffff" stop-opacity="0.95"/>
+    </linearGradient>
+  </defs>
+  <rect x="64" y="64" width="896" height="896" rx="200" fill="url(#bg)"/>
+  <circle cx="300" cy="300" r="5" fill="#fff" opacity=".6"/><circle cx="720" cy="230" r="4" fill="#fff" opacity=".5"/><circle cx="820" cy="460" r="5" fill="#fff" opacity=".4"/><circle cx="210" cy="560" r="4" fill="#fff" opacity=".4"/>
+  <path d="M170 820 C 330 760, 470 640, 600 470" fill="none" stroke="url(#trail)" stroke-width="34" stroke-linecap="round"/>
+  <path d="M215 860 C 375 800, 515 680, 640 510" fill="none" stroke="url(#trail)" stroke-width="20" stroke-linecap="round" opacity=".55"/>
+  <g transform="translate(660 400) rotate(45)" fill="#ffc94a">
+    <path d="M0 -190 C 24 -190 34 -160 34 -130 L 34 -40 L 190 50 L 190 92 L 34 40 L 34 120 L 84 160 L 84 192 L 0 168 L -84 192 L -84 160 L -34 120 L -34 40 L -190 92 L -190 50 L -34 -40 L -34 -130 C -34 -160 -24 -190 0 -190 Z"/>
+  </g>
+</svg>

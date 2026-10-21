@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contrail</title>
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body data-view="board">
+  <!-- Departures -->
+  <section id="board" class="view">
+    <header class="top">
+      <div class="brand"><img src="icon.png" alt="" width="34" height="34"><b>Contrail</b></div>
+      <button class="here" id="here" title="Change where you are">You're in <b id="here-city">…</b> <span id="here-code"></span></button>
+      <div class="actions">
+        <button id="open-log">Logbook</button>
+        <button id="open-settings" class="icon" title="Settings" aria-label="Settings">⚙</button>
+      </div>
+    </header>
+    <div class="board-body">
+      <h1>How long do you want to focus?</h1>
+      <div class="durations" id="durations"></div>
+      <div class="departures">
+        <div class="dep-head">
+          <span>Departures</span>
+          <button id="shuffle" class="ghost">Shuffle</button>
+        </div>
+        <div class="dep-cols"><span>Flight</span><span>Destination</span><span>Flight time</span><span>Gate</span><span></span></div>
+        <div id="departures"></div>
+        <p class="dep-empty" id="dep-empty" hidden>No airports that close. Try a longer session.</p>
+      </div>
+      <div class="search">
+        <label for="dest">Or fly somewhere you choose</label>
+        <input id="dest" list="airports" placeholder="Type a city or airport code, like Tokyo or LIS" autocomplete="off">
+      </div>
+    </div>
+  </section>
+
+  <!-- Boarding pass -->
+  <section id="pass" class="view">
+    <div class="pass" id="pass-card">
+      <div class="pass-main">
+        <div class="pass-top"><b>CONTRAIL</b><span>BOARDING PASS</span></div>
+        <div class="route">
+          <div><big id="p-from">JFK</big><small id="p-from-city">New York</small></div>
+          <div class="plane-glyph">✈</div>
+          <div class="r"><big id="p-to">CDG</big><small id="p-to-city">Paris</small></div>
+        </div>
+        <div class="fields">
+          <div><small>Passenger</small><b id="p-name">Passenger</b></div>
+          <div><small>Flight</small><b id="p-flight">CT 000</b></div>
+          <div><small>Date</small><b id="p-date">—</b></div>
+          <div><small>Focus time</small><b id="p-dur">—</b></div>
+          <div><small>Gate</small><b id="p-gate">—</b></div>
+          <div><small>Seat</small><b id="p-seat">—</b></div>
+          <div><small>Arrives</small><b id="p-arrive">—</b></div>
+          <div><small>Distance</small><b id="p-km">—</b></div>
+        </div>
+      </div>
+      <div class="pass-stub">
+        <small>Seat</small>
+        <div class="seat-pick" id="seat-pick">
+          <button data-seat="window">Window</button>
+          <button data-seat="aisle">Aisle</button>
+        </div>
+        <canvas id="barcode" width="200" height="60"></canvas>
+      </div>
+    </div>
+    <div class="pass-actions">
+      <button id="pass-back" class="ghost">Back to departures</button>
+      <button id="board-btn" class="primary">Board and start focusing</button>
+    </div>
+  </section>
+
+  <!-- In flight -->
+  <section id="flight" class="view">
+    <canvas id="map"></canvas>
+    <div class="hud top-left">
+      <small id="f-number">CT 000</small>
+      <b><span id="f-from">JFK</span> → <span id="f-to">CDG</span></b>
+      <small id="f-cities">New York to Paris</small>
+    </div>
+    <div class="hud top-right">
+      <button id="sound" class="icon" title="Cabin sound" aria-label="Cabin sound">🔊</button>
+      <button id="mini" class="icon" title="Small window that stays on top" aria-label="Small window">▣</button>
+    </div>
+    <div class="announce" id="announce" hidden></div>
+    <div class="hud bottom">
+      <div class="remaining"><small id="f-phase">Taxiing</small><big id="f-left">0:00</big><small>left</small></div>
+      <div class="progress"><i id="f-bar"></i><span class="pl" id="f-dot">✈</span></div>
+      <div class="facts">
+        <div><small>Altitude</small><b id="f-alt">0 ft</b></div>
+        <div><small>Ground speed</small><b id="f-speed">0 km/h</b></div>
+        <div><small>Distance left</small><b id="f-km">0 km</b></div>
+        <div><small>Time in <span id="f-tzcity">Paris</span></small><b id="f-local">—</b></div>
+      </div>
+      <div class="land-early">
+        <button id="divert" class="ghost">Land early</button>
+        <span id="divert-confirm" hidden>Land at the nearest airport and end this session? <button id="divert-yes" class="danger">Land now</button> <button id="divert-no" class="ghost">Keep flying</button></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Arrival -->
+  <section id="arrived" class="view">
+    <div class="arrive-card">
+      <svg class="stamp" id="stamp" viewBox="0 0 220 220" aria-hidden="true"></svg>
+      <h1 id="a-title">Welcome to Paris</h1>
+      <p id="a-sub">You focused for 1 h 25 min.</p>
+      <div class="arrive-actions">
+        <button id="a-again" class="primary">Fly on from here</button>
+        <button id="a-log" class="ghost">Open logbook</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Logbook -->
+  <section id="log" class="view">
+    <header class="top">
+      <div class="brand"><button id="log-back" class="ghost">← Departures</button></div>
+      <b>Logbook</b>
+      <div class="actions"><button id="log-clear" class="ghost">Clear</button></div>
+    </header>
+    <div class="tiles" id="tiles"></div>
+    <canvas id="logmap"></canvas>
+    <div class="log-list" id="log-list"></div>
+  </section>
+
+  <!-- Settings -->
+  <dialog id="settings">
+    <form method="dialog">
+      <h2>Settings</h2>
+      <label>Your name on boarding passes <input id="s-name" maxlength="28" placeholder="Passenger"></label>
+      <label>Where you are now <input id="s-home" list="airports" placeholder="City or airport code"></label>
+      <label class="check"><input type="checkbox" id="s-sound"> Cabin sound while flying</label>
+      <label>Volume <input type="range" id="s-volume" min="0" max="1" step="0.05"></label>
+      <label class="check"><input type="checkbox" id="s-announce"> Captain's announcements</label>
+      <label class="check"><input type="checkbox" id="s-notify"> Notify me when we land</label>
+      <div class="dialog-actions"><button value="ok" class="primary">Done</button></div>
+    </form>
+  </dialog>
+
+  <datalist id="airports"></datalist>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
